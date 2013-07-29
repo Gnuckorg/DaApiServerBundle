@@ -1,0 +1,27 @@
+{
+    "name": "da/api-server-bundle",
+    "type": "symfony-bundle",
+    "description": "DaApiServerBundle is a Symfony2's bundle allowing to provide a REST API in a simple and secure way",
+    "keywords": ["api", "server", "bundle", "da", "Symfony"],
+    "homepage": "https://github.com/Gnuckorg/DaApiServerBundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Thomas Prelot",
+            "email": "tprelot@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/dependency-injection" : ">=2.1,<2.4",
+        "symfony/config" : ">=2.1,<2.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*"
+    },
+    "autoload": {
+        "psr-0": { "Da\\ApiServerBundle": "" }
+    },
+    "minimum-stability": "dev",
+    "target-dir": "Da/ApiServerBundle"
+}
