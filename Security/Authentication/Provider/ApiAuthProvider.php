@@ -60,29 +60,22 @@ class ApiAuthProvider implements AuthenticationProviderInterface
             return null;
         }
 
-        try {
-            $tokenString = $token->getToken();
-            $client = $this->clientManager->findClientByApiToken($tokenString);
-            $scope = $client->getScope();
+        $tokenString = $token->getToken();
+        $client = $this->clientManager->getClientByApiToken($tokenString);
+        $scope = $client->getScope();
 
-            $roles = array();
-            if (!empty($scope)) {
-                foreach (explode(' ', $scope) as $role) {
-                    $roles[] = 'ROLE_' . strtoupper($role);
-                }
+        $roles = array();
+        if (!empty($scope)) {
+            foreach (explode(' ', $scope) as $role) {
+                $roles[] = 'ROLE_' . strtoupper($role);
             }
-
-            $token = new ApiToken($roles);
-            $token->setAuthenticated(true);
-            $token->setToken($tokenString);
-
-            return $token;
-        } catch (\Exception $e) {
-            if ($e instanceof InvalidApiTokenException) {
-                throw $e;
-            }
-            throw new AuthenticationException('API client authentication failed', 0, $e);
         }
+
+        $token = new ApiToken($roles);
+        $token->setAuthenticated(true);
+        $token->setToken($tokenString);
+
+        return $token;
     }
 
     /**

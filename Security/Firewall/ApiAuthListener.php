@@ -11,6 +11,7 @@
 
 namespace Da\ApiServerBundle\Security\Firewall;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
@@ -18,7 +19,6 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Http\Firewall\ListenerInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Da\ApiServerBundle\Security\Authentication\Token\ApiToken;
 
 /**
@@ -75,9 +75,7 @@ class ApiAuthListener implements ListenerInterface
                 return $event->setResponse($returnValue);
             }
         } catch (AuthenticationException $e) {
-            if (null !== $p = $e->getPrevious()) {
-                $event->setResponse($p->getHttpResponse());
-            }
+            $event->setResponse(new Response($e->getMessageKey(), 403));
         }
     }
 
