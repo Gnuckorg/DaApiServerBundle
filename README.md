@@ -63,6 +63,7 @@ security:
 ```
 
 The URLs under `/api` will authenticate a client of your API with the API token send with the request.
+For the time being, the API token must be send in the HTTP header "X-API-Token".
 
 What about the API client side?
 -------------------------------
