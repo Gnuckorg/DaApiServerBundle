@@ -20,6 +20,8 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Http\Firewall\ListenerInterface;
 use Da\ApiServerBundle\Security\Authentication\Token\ApiToken;
+use Da\AuthModelBundle\Exception\InvalidApiTokenException;
+use Da\AuthModelBundle\Exception\ApiTokenNotFoundException;
 
 /**
  * ApiAuthListener class.
@@ -57,14 +59,14 @@ class ApiAuthListener implements ListenerInterface
      */
     public function handle(GetResponseEvent $event)
     {
-        if (null === $apiToken = $this->getApiTokenFromHeaders($event->getRequest(), true)) {
-            return;
-        }
-
-        $token = new ApiToken();
-        $token->setToken($apiToken);
-
         try {
+            if (null === $apiToken = $this->getApiTokenFromHeaders($event->getRequest(), true)) {
+                throw new ApiTokenNotFoundException();
+            }
+
+            $token = new ApiToken();
+            $token->setToken($apiToken);
+        
             $returnValue = $this->authenticationManager->authenticate($token);
 
             if ($returnValue instanceof TokenInterface) {
@@ -75,7 +77,11 @@ class ApiAuthListener implements ListenerInterface
                 return $event->setResponse($returnValue);
             }
         } catch (AuthenticationException $e) {
-            $event->setResponse(new Response($e->getMessageKey(), 403));
+            if ($e instanceof ApiTokenNotFoundException) {
+                $event->setResponse(new Response($e->getMessageKey(), 401));
+            } else {
+                $event->setResponse(new Response($e->getMessageKey(), 403));
+            }
         }
     }
 
