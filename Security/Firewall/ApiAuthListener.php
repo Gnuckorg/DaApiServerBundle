@@ -18,6 +18,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Http\Firewall\ListenerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Da\ApiServerBundle\Security\Authentication\Token\ApiToken;
 
 /**
