@@ -96,18 +96,18 @@ class ApiAuthListener implements ListenerInterface
     protected function getApiTokenFromHeaders(Request $request, $removeFromRequest)
     {
         $token = null;
-        if (!$request->headers->has('X-API-Token')) {
+        if (!$request->headers->has('X-API-Security-Token')) {
             // The Authorization header may not be passed to PHP by Apache.
             // Trying to obtain it through apache_request_headers().
             if (function_exists('apache_request_headers')) {
                 $headers = apache_request_headers();
 
-                if (isset($headers['X-API-Token'])) {
-                   $token = $headers['X-API-Token'];
+                if (isset($headers['X-API-Security-Token'])) {
+                   $token = $headers['X-API-Security-Token'];
                 }
             }
         } else {
-            $token = $request->headers->get('X-API-Token');
+            $token = $request->headers->get('X-API-Security-Token');
         }
 
         if (!$token) {
@@ -115,7 +115,7 @@ class ApiAuthListener implements ListenerInterface
         }
 
         if ($removeFromRequest) {
-            $request->headers->remove('X-API-Token');
+            $request->headers->remove('X-API-Security-Token');
         }
 
         return $token;
