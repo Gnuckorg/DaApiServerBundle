@@ -19,9 +19,10 @@ interface QueryBuilderDecoratorInterface
      *     - =##myvalue1||=##myvalue2||=##myvalue3
      *     - >##myminvalue&&!##myvalue
      *
-     * @param mixed $value The value.
+     * @param string  $field  The field name.
+     * @param mixed   $value  The value.
      *
      * @return QueryBuilderDecoratorInterface This.
      */
-    function match($value);
+    function match($field, $value);
 }

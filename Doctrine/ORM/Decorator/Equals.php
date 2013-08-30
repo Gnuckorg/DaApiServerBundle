@@ -2,7 +2,7 @@
 
 namespace Da\ApiServerBundle\Doctrine\MongoDB\Decorator;
 
-use Da\ApiServerBundle\Model\AbstractQueryBuilderDecorator;
+use Da\ApiServerBundle\Doctrine\ORM\AbstractQueryBuilderDecorator;
 
 /**
  * Equals operation decorator.

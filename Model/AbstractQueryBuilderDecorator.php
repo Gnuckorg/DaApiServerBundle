@@ -2,7 +2,6 @@
 
 namespace Da\ApiServerBundle\Model;
 
-use Doctrine\ODM\MongoDB\DocumentRepository;
 use Da\ApiServerBundle\Model\AbstractQueryBuilderDecorator;
 
 /**
@@ -74,24 +73,50 @@ abstract class AbstractQueryBuilderDecorator implements QueryBuilderDecoratorInt
     /**
      * {@inheritdoc}
      */
-    public function match($value, $parsed = false)
+    public function match($field, $value)
     {
-        if (!$parsed) {
-            $value = $this->parse($value);
-        }
+        $association = (false === strpos($value, '||')) ? self::ASSOCIATION_AND : self::ASSOCIATION_OR)
+        $value = $this->parse($value);
+
+        $chunks = $this->process($field, $value);
+        $this->assemble($chunks, $association);
+
+        return $this;
+    }
+
+    /**
+     * Assemble the query chunks.
+     *
+     * @param array  $chunks      The query chunks.
+     * @param string $field       The field name.
+     * @param string $association The kind of association (and/or).
+     */
+    abstract protected function assemble(array $chunks, $field, $association);
+
+    /**
+     * Process a parsed value.
+     *
+     * @param string  $field  The field name.
+     * @param mixed   $value  The value.
+     *
+     * @return array The chunks of query to assemble.
+     */
+    private function process($field, $value)
+    {
+        $chunks = array();
 
         foreach ($value as $key => $operation) {
             if ($this->handle($operation['operation'])) {
                 $arguments = $this->check($operation['arguments']);
-                $this->build($operation['arguments'], $operation['association']);
+                $chunks = array_merge($chunks, $this->build($operation['arguments'], $operation['association']));
                 unset($value[$key]);
             }
         }
 
         if (!empty($value))
-            $this->decorated->match($value, true);
+            $chunks = array_merge($this->decorated->process($field, $value));
 
-        return $this;
+        return $chunks;
     }
 
     /**
@@ -169,7 +194,8 @@ abstract class AbstractQueryBuilderDecorator implements QueryBuilderDecoratorInt
      * Build the interpreted value in the query builder.
      *
      * @param array  $arguments   The arguments.
+     * @param string $field       The field name.
      * @param string $association The kind of association with its predecessor.
      */
-    abstract protected function build(array $arguments, $association);
+    abstract protected function build(array $arguments, $field, $association);
 }
