@@ -5,18 +5,18 @@ namespace Da\ApiServerBundle\Doctrine\ORM\Decorator;
 use Da\ApiServerBundle\Doctrine\ORM\AbstractQueryBuilderDecorator;
 
 /**
- * Equals operation decorator.
+ * In operation decorator.
  *
  * @author Thomas Prelot <tprelot@gmail.com>
  */
-class Equals extends AbstractQueryBuilderDecorator
+class In extends AbstractQueryBuilderDecorator
 {
     /**
      * {@inheritdoc}
      */
     protected function handle($operation)
     {
-        return ($operation === '=');
+        return ($operation === 'in');
     }
 
     /**
@@ -27,9 +27,7 @@ class Equals extends AbstractQueryBuilderDecorator
         $argumentsCount = count($arguments);
 
         if ($argumentsCount < 1) {
-            throw new \InvalidArgumentException('The "equals" method take one argument.');
-        } else if ($argumentsCount > 1) {
-            throw new \InvalidArgumentException('Too many arguments for an "equals" operation.');
+            throw new \InvalidArgumentException('The "in" method take at least one argument.');
         }
 
         return $arguments;
@@ -40,6 +38,6 @@ class Equals extends AbstractQueryBuilderDecorator
      */
     protected function interpret(array $arguments, $field)
     {
-        return $this->createChunk($field, '=', $arguments[0]);
+        return $this->createChunk($field, 'in', $arguments);
     }
 }

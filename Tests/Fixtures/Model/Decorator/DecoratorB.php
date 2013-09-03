@@ -30,7 +30,22 @@ class DecoratorB extends AbstractQueryBuilderDecorator
     /**
      * {@inheritdoc}
      */
-    protected function build(array $arguments, $association)
+    protected function interpret(array $arguments, $association)
+    {
+        return array();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function assemble(array $chunks, $field, $association)
+    {
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function checkChunk($chunk)
     {
     }
 }

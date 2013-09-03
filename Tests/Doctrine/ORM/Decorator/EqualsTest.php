@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Da\ApiServerBundle\Tests\Doctrine\MongoDB\Decorator;
+namespace Da\ApiServerBundle\Tests\Doctrine\ORM\Decorator;
 
-use Doctrine\MongoDB\Query\Expr;
-use Da\ApiServerBundle\Doctrine\MongoDB\ObjectRepository;
+use Doctrine\ORM\Query\Expr;
+use Da\ApiServerBundle\Doctrine\ORM\ObjectRepository;
 use Da\ApiServerBundle\Model\AbstractQueryBuilderDecorator;
 
 /**
@@ -27,11 +27,11 @@ class EqualsTest extends \PHPUnit_Framework_TestCase
     {
         $values = array();
 
-        $values[] = array('abc', 'and', array('abc'));
-        $values[] = array('=##abd', 'and', array('abd'));
-        $values[] = array('abc||bda', 'or', array('abc', 'bda'));
-        $values[] = array('=##abc||=##bca', 'or', array('abc', 'bca'));
-        $values[] = array('=##abc&&=##2&&=##234d_s_d', 'and', array('abc', '2', '234d_s_d'));
+        $values[] = array('abc', array('value' => 'dumb = ?', 'parameters' => array('abc')));
+        $values[] = array('=##abd', array('value' => 'dumb = ?', 'parameters' => array('abd')));
+        $values[] = array('abc||bda', array('value' => 'dumb = ? OR dumb = ?', 'parameters' => array('abc', 'bda')));
+        $values[] = array('=##abc||=##bca', array('value' => 'dumb = ? OR dumb = ?', 'parameters' => array('abc', 'bca')));
+        $values[] = array('=##abc&&=##2&&=##234d_s_d', array('value' => 'dumb = ? AND dumb = ? AND dumb = ?', 'parameters' => array('abc', '2', '234d_s_d')));
 
         return $values;
     }
@@ -47,20 +47,20 @@ class EqualsTest extends \PHPUnit_Framework_TestCase
 
     public function getDecoratorMock()
     {
-        $decorator = $this->getMockBuilder('Da\ApiServerBundle\Doctrine\MongoDB\Decorator\Equals')
+        $decorator = $this->getMockBuilder('Da\ApiServerBundle\Doctrine\ORM\Decorator\Equals')
             ->disableOriginalConstructor()
-            ->setMethods(array('expr', 'addAnd'))
+            ->setMethods(array('where', 'getDQLPart'))
             ->getMock()
         ;
         $decorator
             ->expects($this->any())
-            ->method('expr')
-            ->will($this->returnCallback(array($this, 'expr')))
+            ->method('where')
+            ->will($this->returnCallback(array($this, 'addMatchedValue')))
         ;
         $decorator
             ->expects($this->any())
-            ->method('addAnd')
-            ->will($this->returnCallback(array($this, 'addMatchedValue')))
+            ->method('getDQLPart')
+            ->will($this->returnValue(null))
         ;
 
         return $decorator;
@@ -69,29 +69,28 @@ class EqualsTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers Da\ApiServerBundle\Model\AbstractQueryBuilderDecorator::match
      * @covers Da\ApiServerBundle\Model\AbstractQueryBuilderDecorator::parse
-     * @covers Da\ApiServerBundle\Doctrine\MongoDB\Decorator\Equals::handle
-     * @covers Da\ApiServerBundle\Doctrine\MongoDB\Decorator\Equals::check
-     * @covers Da\ApiServerBundle\Doctrine\MongoDB\Decorator\Equals::build
+     * @covers Da\ApiServerBundle\Doctrine\ORM\Decorator\Equals::handle
+     * @covers Da\ApiServerBundle\Doctrine\ORM\Decorator\Equals::check
+     * @covers Da\ApiServerBundle\Doctrine\ORM\Decorator\Equals::build
      * @dataProvider getValue
      */
-    public function testMatch($value, $association, $expected)
+    public function testMatch($value, $expected)
     {
         $this->match = array();
-        $this->association = $association;
 
         $decorator = $this->getDecoratorMock();
         $decorator->match('dumb', $value);
 
         $this->assertEquals($expected, $this->match, 
-            '->match() build a set of MongoDB expressions in the query builder.'
+            '->match() build a set of sql where expressions in the query builder.'
         );
     }
 
     /**
      * @covers Da\ApiServerBundle\Model\AbstractQueryBuilderDecorator::match
      * @covers Da\ApiServerBundle\Model\AbstractQueryBuilderDecorator::parse
-     * @covers Da\ApiServerBundle\Doctrine\MongoDB\Decorator\Equals::handle
-     * @covers Da\ApiServerBundle\Doctrine\MongoDB\Decorator\Equals::check
+     * @covers Da\ApiServerBundle\Doctrine\ORM\Decorator\Equals::handle
+     * @covers Da\ApiServerBundle\Doctrine\ORM\Decorator\Equals::check
      * @dataProvider getBadValue
      * @expectedException InvalidArgumentException
      */
@@ -103,16 +102,11 @@ class EqualsTest extends \PHPUnit_Framework_TestCase
         $decorator->match('dumb', $value);
     }
 
-    public function addMatchedValue($value)
+    public function addMatchedValue($value, array $parameters)
     {
-        $query = $value->getQuery();
-        foreach ($query['$'.$this->association] as $subValue) {
-            $this->match[] = $subValue['dumb'];
-        }
-    }
-
-    public function expr()
-    {
-        return new Expr('$');
+        $this->match = array(
+            'value' => $value,
+            'parameters' => $parameters
+        );
     }
 }

@@ -75,11 +75,11 @@ abstract class AbstractQueryBuilderDecorator implements QueryBuilderDecoratorInt
      */
     public function match($field, $value)
     {
-        $association = (false === strpos($value, '||')) ? self::ASSOCIATION_AND : self::ASSOCIATION_OR)
+        $association = (false === strpos($value, '||')) ? self::ASSOCIATION_AND : self::ASSOCIATION_OR;
         $value = $this->parse($value);
 
         $chunks = $this->process($field, $value);
-        $this->assemble($chunks, $association);
+        $this->assemble($chunks, $field, $association);
 
         return $this;
     }
@@ -96,8 +96,8 @@ abstract class AbstractQueryBuilderDecorator implements QueryBuilderDecoratorInt
     /**
      * Process a parsed value.
      *
-     * @param string  $field  The field name.
-     * @param mixed   $value  The value.
+     * @param string $field The field name.
+     * @param array  $value The parsed value.
      *
      * @return array The chunks of query to assemble.
      */
@@ -108,13 +108,14 @@ abstract class AbstractQueryBuilderDecorator implements QueryBuilderDecoratorInt
         foreach ($value as $key => $operation) {
             if ($this->handle($operation['operation'])) {
                 $arguments = $this->check($operation['arguments']);
-                $chunks = array_merge($chunks, $this->build($operation['arguments'], $operation['association']));
+                $chunks = array_merge($chunks, $this->build($operation['arguments'], $field));
                 unset($value[$key]);
             }
         }
 
-        if (!empty($value))
-            $chunks = array_merge($this->decorated->process($field, $value));
+        if (!empty($value)) {
+            $chunks = array_merge($chunks, $this->decorated->process($field, $value));
+        }
 
         return $chunks;
     }
@@ -193,9 +194,38 @@ abstract class AbstractQueryBuilderDecorator implements QueryBuilderDecoratorInt
     /**
      * Build the interpreted value in the query builder.
      *
-     * @param array  $arguments   The arguments.
-     * @param string $field       The field name.
-     * @param string $association The kind of association with its predecessor.
+     * @param array  $arguments The arguments.
+     * @param string $field     The field name.
      */
-    abstract protected function build(array $arguments, $field, $association);
+    protected function build(array $arguments, $field)
+    {
+        $chunks = $this->interpret($arguments, $field);
+        if (!is_array($chunks) || count(array_filter(array_keys($chunks), 'is_string')) !== 0)
+            $chunks = array($chunks);
+
+        foreach ($chunks as $chunk) {
+            $this->checkChunk($chunk);
+        }
+
+        return $chunks;
+    }
+
+    /**
+     * Interpret the value.
+     *
+     * @param array  $arguments The arguments.
+     * @param string $field     The field name.
+     *
+     * @return Doctrine\MongoDB\Query\Expr|array An expression or a set of expression.
+     */
+    abstract protected function interpret(array $arguments, $field);
+
+    /**
+     * Check the format of a chunk.
+     *
+     * @param mixed $chunk The chunk.
+     *
+     * @throws \InvalidArgumentException If the check fails.
+     */
+    abstract protected function checkChunk($chunk);
 }

@@ -11,7 +11,7 @@ use Da\ApiServerBundle\Model\AbstractQueryBuilderDecorator as BaseAbstractQueryB
  *
  * @author Thomas Prelot <tprelot@gmail.com>
  */
-abstract class AbstractQueryBuilderDecorator implements BaseAbstractQueryBuilderDecorator
+abstract class AbstractQueryBuilderDecorator extends BaseAbstractQueryBuilderDecorator
 {
     /**
      * {@inheritdoc}
@@ -21,10 +21,6 @@ abstract class AbstractQueryBuilderDecorator implements BaseAbstractQueryBuilder
         $expr = $this->expr()->field($field);
 
         foreach ($chunks as $chunkExpr) {
-            if (!($chunkExpr instanceof Expr)) {
-                throw new \InvalidArgumentException('A chunck must be an instance of "Doctrine\MongoDB\Query\Expr".');
-            }
-
             if ($association === BaseAbstractQueryBuilderDecorator::ASSOCIATION_OR) {
                 $expr->addOr($chunkExpr);
             } else {
@@ -38,25 +34,22 @@ abstract class AbstractQueryBuilderDecorator implements BaseAbstractQueryBuilder
     /**
      * {@inheritdoc}
      */
-    protected function build(array $arguments, $association)
+    protected function checkChunk($chunk)
     {
-        $chunks = array();
-        //$this->
-
-        return $chunks;
-
-        if ($association === AbstractQueryBuilderDecorator::ASSOCIATION_OR) {
-            $this->addOr($this->expr()->field($this->currentField)->equals($arguments[0]));
-        } else {
-            $this->equals($arguments[0]);
+        if (!($chunk instanceof Expr)) {
+            throw new \InvalidArgumentException('The interpret method of a decorator must return an instance of "Doctrine\MongoDB\Query\Expr" or an array of "Doctrine\MongoDB\Query\Expr".');
         }
     }
 
     /**
-     * {@inheritdoc}
+     * Create an initialized chunk.
+     *
+     * @param string $field The field name.
+     *
+     * @return An initilized empty expression.
      */
-    protected function createChunk(array $chunks, $field, $association)
+    protected function createChunk($field)
     {
-        return $this->expr()->field();
+        return $this->expr()->field($field);
     }
 }
