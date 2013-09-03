@@ -54,7 +54,7 @@ class ObjectRepository extends DocumentRepository implements ObjectRepositoryInt
     protected static function getDecoratorNamespace()
     {
         if (null === self::$decoratorsNamespace)
-            return '\Da\ApiServer\Doctrine\MongoDB\Decorator';
+            return '\Da\ApiServerBundle\Doctrine\MongoDB\Decorator';
         return self::$decoratorsNamespace;
     }
 
@@ -82,7 +82,7 @@ class ObjectRepository extends DocumentRepository implements ObjectRepositoryInt
                     $path = realpath($dir.'/'.$file);
                     if ($file !== "." && $file !== ".." && !is_dir($dir.'/'.$file)) {
                         // The decorator should declare it itself with the static 
-                        // method addDecoratorClassName in its file. 
+                        // method addDecoratorClassName in its file.
                         require_once($path);
                         $class = str_replace('/', '\\', $path);
                         $class = substr($class, strrpos($class, '\\'));

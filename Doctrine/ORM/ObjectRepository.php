@@ -54,7 +54,7 @@ class ObjectRepository extends EntityRepository implements ObjectRepositoryInter
     protected static function getDecoratorNamespace()
     {
         if (null === self::$decoratorsNamespace)
-            return '\Da\ApiServer\Doctrine\ORM\Decorator';
+            return '\Da\ApiServerBundle\Doctrine\ORM\Decorator';
         return self::$decoratorsNamespace;
     }
 

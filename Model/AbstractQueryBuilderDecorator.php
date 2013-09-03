@@ -61,7 +61,7 @@ abstract class AbstractQueryBuilderDecorator implements QueryBuilderDecoratorInt
             $method = $class->getMethod($methodName);
         } catch (\ReflectionException $exception) {
             if ($this->decorated instanceof AbstractQueryBuilderDecorator) {
-                $this->decorated->__call($methodName, $arguments);
+                return $this->decorated->__call($methodName, $arguments);
             } else {
                 throw $exception;
             }
@@ -149,7 +149,7 @@ abstract class AbstractQueryBuilderDecorator implements QueryBuilderDecoratorInt
         }
 
         foreach ($explodedValue as $operationValue) {
-            $explodedOperationValue = explode('##', $operationValue);
+            $explodedOperationValue = explode('~~', $operationValue);
             if (count($explodedOperationValue) === 1) {
                     $operation = array(
                     'association' => $association,
