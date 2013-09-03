@@ -9,7 +9,7 @@ use Da\ApiServerBundle\Doctrine\MongoDB\AbstractQueryBuilderDecorator;
  *
  * @author Thomas Prelot <tprelot@gmail.com>
  */
-class LowerThan extends AbstractQueryBuilderDecorator
+class LowerThanOrEquals extends AbstractQueryBuilderDecorator
 {
     /**
      * {@inheritdoc}

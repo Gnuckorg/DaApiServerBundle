@@ -9,14 +9,14 @@ use Da\ApiServerBundle\Doctrine\ORM\AbstractQueryBuilderDecorator;
  *
  * @author Thomas Prelot <tprelot@gmail.com>
  */
-class GreaterThan extends AbstractQueryBuilderDecorator
+class GreaterThanOrEquals extends AbstractQueryBuilderDecorator
 {
     /**
      * {@inheritdoc}
      */
     protected function handle($operation)
     {
-        return ($operation === '>');
+        return ($operation === '>=');
     }
 
     /**
@@ -27,9 +27,9 @@ class GreaterThan extends AbstractQueryBuilderDecorator
         $argumentsCount = count($arguments);
 
         if ($argumentsCount < 1) {
-            throw new \InvalidArgumentException('The "greater than" method take one argument.');
+            throw new \InvalidArgumentException('The "greater than or equals" method take one argument.');
         } else if ($argumentsCount > 1) {
-            throw new \InvalidArgumentException('Too many arguments for an "greater than" operation.');
+            throw new \InvalidArgumentException('Too many arguments for an "greater than or equals" operation.');
         }
 
         return $arguments;
@@ -40,6 +40,6 @@ class GreaterThan extends AbstractQueryBuilderDecorator
      */
     protected function interpret(array $arguments, $field)
     {
-        return $this->createChunk($field)->gt($arguments[0]);
+        return $this->createChunk($field, '>=', $arguments[0]);
     }
 }

@@ -9,7 +9,7 @@ use Da\ApiServerBundle\Doctrine\ORM\AbstractQueryBuilderDecorator;
  *
  * @author Thomas Prelot <tprelot@gmail.com>
  */
-class LowerThan extends AbstractQueryBuilderDecorator
+class LowerThanOrEquals extends AbstractQueryBuilderDecorator
 {
     /**
      * {@inheritdoc}
