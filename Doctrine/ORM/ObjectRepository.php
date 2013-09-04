@@ -111,21 +111,22 @@ class ObjectRepository extends EntityRepository implements ObjectRepositoryInter
     /**
      * Return the native query builder.
      *
-     * @param string The name of the document.
+     * @param string $alias
+     * @param string $indexBy The index for the from.
      *
      * @return Doctrine\MongoDB\Query\Builder The native query builder.
      */
-    protected function getNativeQueryBuilder($documentName = null)
+    protected function getNativeQueryBuilder($alias, $indexBy = null)
     {
-        return parent::createQueryBuilder($documentName);
+        return parent::createQueryBuilder($alias, $indexBy);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function createQueryBuilder($documentName = null)
+    public function createQueryBuilder($alias, $indexBy = null)
     {
-        $decorated = $this->getNativeQueryBuilder();
+        $decorated = $this->getNativeQueryBuilder($alias, $indexBy);
         
         foreach (self::getDecorators() as $decoratorClassName) {
             $decorator = new $decoratorClassName($decorated);

@@ -47,7 +47,7 @@ class ObjectRepositoryTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($queryBuilder))
         ;
         
-        $decoratedQueryBuilder = $objectRepository->createQueryBuilder();
+        $decoratedQueryBuilder = $objectRepository->createQueryBuilder('dumb');
 
         $this->assertEquals('a', $decoratedQueryBuilder->a(), 
             '->createQueryBuilder() returns a decorated query builder with all the decorators from the "getDecoratorDirectory()" directory.'
