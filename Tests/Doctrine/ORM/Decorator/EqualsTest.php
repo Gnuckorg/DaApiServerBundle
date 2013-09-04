@@ -28,10 +28,10 @@ class EqualsTest extends \PHPUnit_Framework_TestCase
         $values = array();
 
         $values[] = array('abc', array('value' => 'dumb = ?', 'parameters' => array('abc')));
-        $values[] = array('=##abd', array('value' => 'dumb = ?', 'parameters' => array('abd')));
+        $values[] = array('=~~abd', array('value' => 'dumb = ?', 'parameters' => array('abd')));
         $values[] = array('abc||bda', array('value' => 'dumb = ? OR dumb = ?', 'parameters' => array('abc', 'bda')));
-        $values[] = array('=##abc||=##bca', array('value' => 'dumb = ? OR dumb = ?', 'parameters' => array('abc', 'bca')));
-        $values[] = array('=##abc&&=##2&&=##234d_s_d', array('value' => 'dumb = ? AND dumb = ? AND dumb = ?', 'parameters' => array('abc', '2', '234d_s_d')));
+        $values[] = array('=~~abc||=~~bca', array('value' => 'dumb = ? OR dumb = ?', 'parameters' => array('abc', 'bca')));
+        $values[] = array('=~~abc&&=~~2&&=~~234d_s_d', array('value' => 'dumb = ? AND dumb = ? AND dumb = ?', 'parameters' => array('abc', '2', '234d_s_d')));
 
         return $values;
     }
@@ -40,7 +40,7 @@ class EqualsTest extends \PHPUnit_Framework_TestCase
     {
         $values = array();
 
-        $values[] = array('=##abd##oic');
+        $values[] = array('=~~abd~~oic');
 
         return $values;
     }
