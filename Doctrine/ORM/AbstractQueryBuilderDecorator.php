@@ -17,16 +17,16 @@ abstract class AbstractQueryBuilderDecorator extends BaseAbstractQueryBuilderDec
      */
     protected function assemble(array $chunks, $field, $association)
     {
-    	$where = '';
-    	$associationWord = '';
-    	$parameters = array();
+        $where = '';
+        $associationWord = '';
+        $parameters = array();
 
-    	foreach ($chunks as $chunk) {
+        foreach ($chunks as $chunk) {
             $parameters = array_merge($parameters, $chunk['parameters']);
 
             if (!empty($associationWord)) {
                 $where .= sprintf(
-                	'%s %s',
+                    '%s %s',
                     $associationWord,
                     $chunk['value']
                 );
@@ -35,15 +35,15 @@ abstract class AbstractQueryBuilderDecorator extends BaseAbstractQueryBuilderDec
             }
 
             if (empty($associationWord)) {
-	            if ($association === BaseAbstractQueryBuilderDecorator::ASSOCIATION_OR) {
-	                $associationWord = ' OR';
-	            } else {
-	                $associationWord = ' AND';
-	            }
-	        }
+                if ($association === BaseAbstractQueryBuilderDecorator::ASSOCIATION_OR) {
+                    $associationWord = ' OR';
+                } else {
+                    $associationWord = ' AND';
+                }
+            }
         }
 
-    	if (null === $this->getDQLPart('where')) {
+        if (null === $this->getDQLPart('where')) {
             $this->where($where, $parameters);
         } else {
             $this->andWhere($where, $parameters);

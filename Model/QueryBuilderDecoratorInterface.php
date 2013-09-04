@@ -13,11 +13,11 @@ interface QueryBuilderDecoratorInterface
     /**
      * Interpret a value with the following syntax:
      *     - myvalue
-     *     - !##myvalue
-     *     - in##myvalue1##myvalue2##myvalue3
-     *     - >##myminvalue&&<##mymaxvalue
-     *     - =##myvalue1||=##myvalue2||=##myvalue3
-     *     - >##myminvalue&&!##myvalue
+     *     - !~~myvalue
+     *     - in~~myvalue1~~myvalue2~~myvalue3
+     *     - >~~myminvalue&&<~~mymaxvalue
+     *     - =~~myvalue1||=~~myvalue2||=~~myvalue3
+     *     - >~~myminvalue&&!~~myvalue
      *
      * @param string  $field  The field name.
      * @param mixed   $value  The value.

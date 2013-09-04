@@ -123,11 +123,11 @@ abstract class AbstractQueryBuilderDecorator implements QueryBuilderDecoratorInt
     /**
      * Parse a value with the following syntax:
      *     - myvalue
-     *     - !##myvalue
-     *     - in##myvalue1##myvalue2##myvalue3
-     *     - >##myminvalue&&<##mymaxvalue
-     *     - =##myvalue1||=##myvalue2||=##myvalue3
-     *     - >##myminvalue&&!##myvalue
+     *     - !~~myvalue
+     *     - in~~myvalue1~~myvalue2~~myvalue3
+     *     - >~~myminvalue&&<~~mymaxvalue
+     *     - =~~myvalue1||=~~myvalue2||=~~myvalue3
+     *     - >~~myminvalue&&!~~myvalue
      *
      * @param string $value The non-parsed value.
      * 
