@@ -12,8 +12,8 @@ use Da\ApiServerBundle\Model\AbstractQueryBuilderDecorator;
  */
 abstract class AbstractQueryBuilderDecorator implements QueryBuilderDecoratorInterface
 {
-    const ASSOCIATION_AND = '&&';
-    const ASSOCIATION_OR  = '||';
+    const ASSOCIATION_AND = '~+~';
+    const ASSOCIATION_OR  = '~*~';
 
     /**
      * The decorated query builder.
@@ -125,9 +125,9 @@ abstract class AbstractQueryBuilderDecorator implements QueryBuilderDecoratorInt
      *     - myvalue
      *     - !~~myvalue
      *     - in~~myvalue1~~myvalue2~~myvalue3
-     *     - >~~myminvalue&&<~~mymaxvalue
-     *     - =~~myvalue1||=~~myvalue2||=~~myvalue3
-     *     - >~~myminvalue&&!~~myvalue
+     *     - >~~myminvalue~+~<~~mymaxvalue
+     *     - =~~myvalue1~*~=~~myvalue2~*~=~~myvalue3
+     *     - >~~myminvalue~+~!~~myvalue
      *
      * @param string $value The non-parsed value.
      * 
@@ -142,7 +142,7 @@ abstract class AbstractQueryBuilderDecorator implements QueryBuilderDecoratorInt
         $explodedValueOr = explode(self::ASSOCIATION_OR, $value);
 
         if (count($explodedValueAnd) > 1 && count($explodedValueOr) > 1) {
-            throw new \InvalidArgumentException('The syntax does not allow "&&" and "||" in the same expression for the moment.');
+            throw new \InvalidArgumentException('The syntax does not allow "~+~" and "~*~" in the same expression for the moment.');
         } else if (count($explodedValueOr) > 1) {
             $association = self::ASSOCIATION_OR;
             $explodedValue = $explodedValueOr;

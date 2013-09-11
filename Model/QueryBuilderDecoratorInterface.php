@@ -15,9 +15,9 @@ interface QueryBuilderDecoratorInterface
      *     - myvalue
      *     - !~~myvalue
      *     - in~~myvalue1~~myvalue2~~myvalue3
-     *     - >~~myminvalue&&<~~mymaxvalue
-     *     - =~~myvalue1||=~~myvalue2||=~~myvalue3
-     *     - >~~myminvalue&&!~~myvalue
+     *     - >~~myminvalue~+~<~~mymaxvalue
+     *     - =~~myvalue1~*~=~~myvalue2~*~=~~myvalue3
+     *     - >~~myminvalue~+~!~~myvalue
      *
      * @param string  $field  The field name.
      * @param mixed   $value  The value.
