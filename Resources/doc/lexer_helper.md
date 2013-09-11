@@ -12,17 +12,13 @@ Imagine you have a REST API upon a database resource House:
 | Size  | Price  | Location
 |-------|--------|----------
 | 80    | 300000 | Paris
-|-------|--------|----------
 | 100   | 200000 | Madrid
-|-------|--------|----------
 | 100   | 350000 | New-York
-|-------|--------|----------
 | 150   | 500000 | Tokyo
-|-------|--------|----------
 | 250   | 700000 | Paris
-|-------|--------|----------
 
-The url `http://mybusiness.com/api/houses` [GET] allow you to retrieve some houses from given criteria.
+
+The request `http://mybusiness.com/api/houses` [GET] allow you to retrieve some houses from given criteria.
 For instance:
 
 ```bash
@@ -66,13 +62,13 @@ Implemented operators
 
 Here is the list of already implemented operator:
 
-- *=*: equal to
-- *!*: different of
-- *<*: lower than
-- *>*: greater than
-- *<=*: lower than or equal to
-- *>=*: greater than or equal to
-- *in*: in the list
+- *=* : equal to
+- *!* : different of
+- *<* : lower than
+- *>* : greater than
+- *<=* : lower than or equal to
+- *>=* : greater than or equal to
+- *in* : in the list
 
 How to handle it in your code
 -----------------------------
@@ -80,8 +76,9 @@ How to handle it in your code
 Of course, you have to handle this syntax in your code. 
 As for now, a decorator is provided for some of the query builders of doctrine (ORM and MongoDB).
 To use it, you just have to do 2 things:
-	- Extend one of the defined object repository with your own [custom repository](http://symfony.com/doc/current/book/doctrine.html#custom-repository-classes).
-	- Call the match method on the query builder.
+	
+- Extend one of the defined object repository with your own [custom repository](http://symfony.com/doc/current/book/doctrine.html#custom-repository-classes).
+- Call the match method on the query builder.
 
 For Doctrine ORM:
 
@@ -125,6 +122,6 @@ class HouseRepository extends ObjectRepository
 ```
 
 For Doctrine MongoDB, use `use Da\ApiServerBundle\Doctrine\MongoDB\ObjectRepository;` instead of `use Da\ApiServerBundle\Doctrine\ORM\ObjectRepository;`.
-The use of match is the same for the ORM and MongoDB ODM.
+The use of match is the same for the ORM and the MongoDB ODM.
 
 And that's all! Now, the syntax should be decoded by your query builder.
