@@ -29,9 +29,9 @@ class EqualsTest extends \PHPUnit_Framework_TestCase
 
         $values[] = array('abc', 'and', array('abc'));
         $values[] = array('=~~abd', 'and', array('abd'));
-        $values[] = array('abc||bda', 'or', array('abc', 'bda'));
-        $values[] = array('=~~abc||=~~bca', 'or', array('abc', 'bca'));
-        $values[] = array('=~~abc&&=~~2&&=~~234d_s_d', 'and', array('abc', '2', '234d_s_d'));
+        $values[] = array('abc~*~bda', 'or', array('abc', 'bda'));
+        $values[] = array('=~~abc~*~=~~bca', 'or', array('abc', 'bca'));
+        $values[] = array('=~~abc~+~=~~2~+~=~~234d_s_d', 'and', array('abc', '2', '234d_s_d'));
 
         return $values;
     }
