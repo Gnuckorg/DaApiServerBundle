@@ -69,6 +69,11 @@ security:
 The URLs under `/api` will authenticate a client of your API with the API token send with the request.
 For the time being, the API token must be send in the HTTP header "X-API-Security-Token".
 
+Documentation
+-------------
+
+This bundle have some other features that can help you to develop a REST API documented [here](https://github.com/Gnuckorg/DaApiServerBundle/blob/master/Resources/doc/index.md).
+
 What about the API client side?
 -------------------------------
 
