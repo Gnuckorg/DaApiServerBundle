@@ -11,6 +11,7 @@
 
 namespace Da\ApiServerBundle\Tests\Doctrine\ORM;
 
+use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Da\ApiServerBundle\Doctrine\ORM\ObjectRepository;
 use Da\ApiServerBundle\Model\AbstractQueryBuilderDecorator;
 
@@ -46,10 +47,11 @@ class ObjectRepositoryTest extends \PHPUnit_Framework_TestCase
             ->method('getNativeQueryBuilder')
             ->will($this->returnValue($queryBuilder))
         ;
+        $classMetaData = new ClassMetadataInfo('dumb');
         $objectRepository
             ->expects($this->any())
             ->method('getClassMetaData')
-            ->will($this->returnValue(array('fieldMappings' => array(array('type' => 'string')))));
+            ->will($this->returnValue($classMetaData));
         ;
         
         $decoratedQueryBuilder = $objectRepository->createQueryBuilder('dumb');
