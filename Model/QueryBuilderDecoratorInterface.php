@@ -15,9 +15,9 @@ interface QueryBuilderDecoratorInterface
      *     - myvalue
      *     - !~~myvalue
      *     - in~~myvalue1~~myvalue2~~myvalue3
-     *     - >~~myminvalue~+~<~~mymaxvalue
+     *     - >~~myminvalue~-~<~~mymaxvalue
      *     - =~~myvalue1~*~=~~myvalue2~*~=~~myvalue3
-     *     - >~~myminvalue~+~!~~myvalue
+     *     - >~~myminvalue~-~!~~myvalue
      *
      * @param string  $field  The field name.
      * @param mixed   $value  The value.
@@ -25,4 +25,12 @@ interface QueryBuilderDecoratorInterface
      * @return QueryBuilderDecoratorInterface This.
      */
     function match($field, $value);
+
+    /**
+     * Register the type of a field.
+     *
+     * @param string $name The name of the field.
+     * @param string $type The type of the field.
+     */
+    function registerFieldType($name, $type);
 }

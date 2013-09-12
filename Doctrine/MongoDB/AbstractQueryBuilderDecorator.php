@@ -3,7 +3,10 @@
 namespace Da\ApiServerBundle\Doctrine\MongoDB;
 
 use Doctrine\MongoDB\Query\Expr;
+use Doctrine\ODM\MongoDB\Types\Type;
+use Doctrine\ODM\MongoDB\Types\DateType;
 use Da\ApiServerBundle\Model\AbstractQueryBuilderDecorator as BaseAbstractQueryBuilderDecorator;
+use Da\ApiServerBundle\Exception\InvalidFieldValueException;
 
 /**
  * The abstract decorator class handling the decorator pattern
@@ -29,6 +32,33 @@ abstract class AbstractQueryBuilderDecorator extends BaseAbstractQueryBuilderDec
         }
 
         $this->addAnd($expr);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function translate(array $arguments, $field)
+    {
+        foreach ($arguments as $index => $argument) {
+            $fieldType = Type::getType($this->fieldTypes[$field]);
+
+            if ($fieldType instanceof DateType) {
+                try {
+                    $argument = \DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $argument);
+                } catch (Exception $e) {
+                    try {
+                        $argument = new \DateTime($argument);
+                    } catch (Exception $e) {
+                        throw new InvalidFieldValueException($field, $argument);
+                    }
+                }
+                $arguments[$index] = $argument;
+            } else {
+                $arguments[$index] = $fieldType->convertToPHPValue($argument);
+            }
+        }
+
+        return $arguments;
     }
 
     /**

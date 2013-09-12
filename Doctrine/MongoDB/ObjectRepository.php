@@ -132,6 +132,10 @@ class ObjectRepository extends DocumentRepository implements ObjectRepositoryInt
             $decorated = $decorator;
         }
 
+        foreach($this->getClassMetaData()->fieldMappings as $fieldName => $fieldMapping) {
+            $decorated->registerFieldType($fieldName, $fieldMapping['type']);
+        }
+
         return $decorated;
     }
 }

@@ -2,7 +2,9 @@
 
 namespace Da\ApiServerBundle\Doctrine\ORM;
 
+use Doctrine\DBAL\Types\Type;
 use Da\ApiServerBundle\Model\AbstractQueryBuilderDecorator as BaseAbstractQueryBuilderDecorator;
+use Da\ApiServerBundle\Exception\InvalidFieldValueException;
 
 /**
  * The abstract decorator class handling the decorator pattern
@@ -48,6 +50,38 @@ abstract class AbstractQueryBuilderDecorator extends BaseAbstractQueryBuilderDec
         } else {
             $this->andWhere($where, $parameters);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function translate(array $arguments, $field)
+    {
+        foreach ($arguments as $index => $argument) {
+            $fieldType = Type::getType($this->fieldTypes[$field]);
+
+            switch ($fieldType->getName()) {
+                case Type::DATE:
+                case Type::DATETIME:
+                    try {
+                        $argument = \DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $argument);
+                    } catch (Exception $e) {
+                        try {
+                            $argument = new \DateTime($argument);
+                        } catch (Exception $e) {
+                            throw new InvalidFieldValueException($field, $argument);
+                        }
+                    }
+                    $arguments[$index] = $argument;
+                    break;
+                default:
+                    $platform = $this->getEntityManager()->getConnection()->getDatabasePlatform();
+                    $arguments[$index] = $fieldType->convertToPHPValue($argument, $platform);
+                    break;
+            }
+        }
+
+        return $arguments;
     }
 
     /**

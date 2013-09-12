@@ -30,6 +30,14 @@ class DecoratorA extends AbstractQueryBuilderDecorator
     /**
      * {@inheritdoc}
      */
+    protected function translate(array $arguments, $field)
+    {
+        return $arguments;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function interpret(array $arguments, $association)
     {
         return array();

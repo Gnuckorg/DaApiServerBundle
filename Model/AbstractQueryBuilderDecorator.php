@@ -12,7 +12,7 @@ use Da\ApiServerBundle\Model\AbstractQueryBuilderDecorator;
  */
 abstract class AbstractQueryBuilderDecorator implements QueryBuilderDecoratorInterface
 {
-    const ASSOCIATION_AND = '~+~';
+    const ASSOCIATION_AND = '~-~';
     const ASSOCIATION_OR  = '~*~';
 
     /**
@@ -21,6 +21,13 @@ abstract class AbstractQueryBuilderDecorator implements QueryBuilderDecoratorInt
      * @var QueryBuilderDecoratorInterface
      */
     protected $decorated;
+
+    /**
+     * The types of the fields.
+     *
+     * @var array
+     */
+    protected $fieldTypes = array();
 
     /**
      * Constructor.
@@ -73,6 +80,18 @@ abstract class AbstractQueryBuilderDecorator implements QueryBuilderDecoratorInt
     /**
      * {@inheritdoc}
      */
+    public function registerFieldType($name, $type)
+    {
+        $this->fieldTypes[$name] = $type;
+
+        if ($this->decorated instanceof QueryBuilderDecoratorInterface) {
+            $this->decorated->registerFieldType($name, $type);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function match($field, $value)
     {
         $association = (false === strpos($value, self::ASSOCIATION_OR)) ? self::ASSOCIATION_AND : self::ASSOCIATION_OR;
@@ -108,7 +127,8 @@ abstract class AbstractQueryBuilderDecorator implements QueryBuilderDecoratorInt
         foreach ($value as $key => $operation) {
             if ($this->handle($operation['operation'])) {
                 $arguments = $this->check($operation['arguments']);
-                $chunks = array_merge($chunks, $this->build($operation['arguments'], $field));
+                $arguments = $this->translate($arguments, $field);
+                $chunks = array_merge($chunks, $this->build($arguments, $field));
                 unset($value[$key]);
             }
         }
@@ -125,9 +145,9 @@ abstract class AbstractQueryBuilderDecorator implements QueryBuilderDecoratorInt
      *     - myvalue
      *     - !~~myvalue
      *     - in~~myvalue1~~myvalue2~~myvalue3
-     *     - >~~myminvalue~+~<~~mymaxvalue
+     *     - >~~myminvalue~-~<~~mymaxvalue
      *     - =~~myvalue1~*~=~~myvalue2~*~=~~myvalue3
-     *     - >~~myminvalue~+~!~~myvalue
+     *     - >~~myminvalue~-~!~~myvalue
      *
      * @param string $value The non-parsed value.
      * 
@@ -142,7 +162,7 @@ abstract class AbstractQueryBuilderDecorator implements QueryBuilderDecoratorInt
         $explodedValueOr = explode(self::ASSOCIATION_OR, $value);
 
         if (count($explodedValueAnd) > 1 && count($explodedValueOr) > 1) {
-            throw new \InvalidArgumentException('The syntax does not allow "~+~" and "~*~" in the same expression for the moment.');
+            throw new \InvalidArgumentException('The syntax does not allow "~-~" and "~*~" in the same expression for the moment.');
         } else if (count($explodedValueOr) > 1) {
             $association = self::ASSOCIATION_OR;
             $explodedValue = $explodedValueOr;
@@ -190,6 +210,16 @@ abstract class AbstractQueryBuilderDecorator implements QueryBuilderDecoratorInt
      * @throws \InvalidArgumentException If the check fails.
      */
     abstract protected function check(array $arguments);
+
+    /**
+     * Translate the arguments in their real type.
+     *
+     * @param array  $arguments The arguments.
+     * @param string $field     The field name.
+     * 
+     * @return array The translated arguments.
+     */
+    abstract protected function translate(array $arguments, $field);
 
     /**
      * Build the interpreted value in the query builder.

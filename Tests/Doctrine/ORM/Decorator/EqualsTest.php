@@ -31,7 +31,7 @@ class EqualsTest extends \PHPUnit_Framework_TestCase
         $values[] = array('=~~abd', array('value' => 'dumb = ?', 'parameters' => array('abd')));
         $values[] = array('abc~*~bda', array('value' => 'dumb = ? OR dumb = ?', 'parameters' => array('abc', 'bda')));
         $values[] = array('=~~abc~*~=~~bca', array('value' => 'dumb = ? OR dumb = ?', 'parameters' => array('abc', 'bca')));
-        $values[] = array('=~~abc~+~=~~2~+~=~~234d_s_d', array('value' => 'dumb = ? AND dumb = ? AND dumb = ?', 'parameters' => array('abc', '2', '234d_s_d')));
+        $values[] = array('=~~abc~-~=~~2~-~=~~234d_s_d', array('value' => 'dumb = ? AND dumb = ? AND dumb = ?', 'parameters' => array('abc', '2', '234d_s_d')));
 
         return $values;
     }
@@ -49,7 +49,7 @@ class EqualsTest extends \PHPUnit_Framework_TestCase
     {
         $decorator = $this->getMockBuilder('Da\ApiServerBundle\Doctrine\ORM\Decorator\Equals')
             ->disableOriginalConstructor()
-            ->setMethods(array('where', 'getDQLPart'))
+            ->setMethods(array('where', 'getDQLPart', 'translate'))
             ->getMock()
         ;
         $decorator
@@ -61,6 +61,11 @@ class EqualsTest extends \PHPUnit_Framework_TestCase
             ->expects($this->any())
             ->method('getDQLPart')
             ->will($this->returnValue(null))
+        ;
+        $decorator
+            ->expects($this->any())
+            ->method('translate')
+            ->will($this->returnArgument(0))
         ;
 
         return $decorator;

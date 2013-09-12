@@ -38,13 +38,18 @@ class ObjectRepositoryTest extends \PHPUnit_Framework_TestCase
         ObjectRepository::setDecoratorDirectory(__DIR__.'/../../Fixtures/Model/Decorator', '\Da\ApiServerBundle\Tests\Fixtures\Model\Decorator');
         $objectRepository = $this->getMockBuilder('Da\ApiServerBundle\Doctrine\MongoDB\ObjectRepository')
             ->disableOriginalConstructor()
-            ->setMethods(array('getNativeQueryBuilder'))
+            ->setMethods(array('getNativeQueryBuilder', 'getClassMetaData'))
             ->getMock()
         ;
         $objectRepository
             ->expects($this->any())
             ->method('getNativeQueryBuilder')
             ->will($this->returnValue($queryBuilder))
+        ;
+        $objectRepository
+            ->expects($this->any())
+            ->method('getClassMetaData')
+            ->will($this->returnValue(array('fieldMappings' => array(array('type' => 'string')))));
         ;
         
         $decoratedQueryBuilder = $objectRepository->createQueryBuilder();
