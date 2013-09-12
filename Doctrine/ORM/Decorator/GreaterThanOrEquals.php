@@ -29,7 +29,7 @@ class GreaterThanOrEquals extends AbstractQueryBuilderDecorator
         if ($argumentsCount < 1) {
             throw new \InvalidArgumentException('The "greater than or equals" method take one argument.');
         } else if ($argumentsCount > 1) {
-            throw new \InvalidArgumentException('Too many arguments for an "greater than or equals" operation.');
+            throw new \InvalidArgumentException('Too many arguments for a "greater than or equals" operation.');
         }
 
         return $arguments;

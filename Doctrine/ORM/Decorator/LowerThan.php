@@ -29,7 +29,7 @@ class LowerThan extends AbstractQueryBuilderDecorator
         if ($argumentsCount < 1) {
             throw new \InvalidArgumentException('The "lower than" method take one argument.');
         } else if ($argumentsCount > 1) {
-            throw new \InvalidArgumentException('Too many arguments for an "lower than" operation.');
+            throw new \InvalidArgumentException('Too many arguments for a "lower than" operation.');
         }
 
         return $arguments;

@@ -29,7 +29,7 @@ class NotEquals extends AbstractQueryBuilderDecorator
         if ($argumentsCount < 1) {
             throw new \InvalidArgumentException('The "not equals" method take one argument.');
         } else if ($argumentsCount > 1) {
-            throw new \InvalidArgumentException('Too many arguments for an "not equals" operation.');
+            throw new \InvalidArgumentException('Too many arguments for a "not equals" operation.');
         }
 
         return $arguments;
