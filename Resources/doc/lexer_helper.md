@@ -48,13 +48,15 @@ http://mybusiness.com/api/houses?location=!~~Madrid
 I want to retrieve the houses from 100m² to 200m² and a price from 200000 to 300000:
 
 ```bash
-http://mybusiness.com/api/houses?size=>~~100~+~<~~200&price=>~~200000~+~<~~300000
+http://mybusiness.com/api/houses?size=>~~100~-~<~~200&price=>~~200000~-~<~~300000
 ```
 
 I just want the houses in Paris and Tokyo:
 
 ```bash
 http://mybusiness.com/api/houses?location=in~~Paris~~Tokyo
+# equivalent to:
+http://mybusiness.com/api/houses?location=Paris~*~Tokyo
 ```
 
 Implemented operators
@@ -69,6 +71,12 @@ Here is the list of already implemented operator:
 - *<=* : lower than or equal to
 - *>=* : greater than or equal to
 - *in* : in the list
+
+Implemented associations
+------------------------
+
+- *~-~* : and
+- *~\*~* : or
 
 How to handle it in your code
 -----------------------------
