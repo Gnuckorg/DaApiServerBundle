@@ -76,7 +76,7 @@ Implemented associations
 ------------------------
 
 - *~-~* : and
-- *~\*~* : or
+- *~``*``~* : or
 
 How to handle it in your code
 -----------------------------
