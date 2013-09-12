@@ -64,19 +64,19 @@ Implemented operators
 
 Here is the list of already implemented operator:
 
-- *=* : equal to
-- *!* : different of
-- *<* : lower than
-- *>* : greater than
-- *<=* : lower than or equal to
-- *>=* : greater than or equal to
-- *in* : in the list
+- `=` : equal to
+- `!` : different of
+- `<` : lower than
+- `>` : greater than
+- `<=` : lower than or equal to
+- `>=` : greater than or equal to
+- `in` : in the list
 
 Implemented associations
 ------------------------
 
-- *~-~* : and
-- *~``*``~* : or
+- `~-~` : and
+- `~*~` : or
 
 How to handle it in your code
 -----------------------------
