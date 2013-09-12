@@ -75,7 +75,7 @@ abstract class AbstractQueryBuilderDecorator implements QueryBuilderDecoratorInt
      */
     public function match($field, $value)
     {
-        $association = (false === strpos($value, '||')) ? self::ASSOCIATION_AND : self::ASSOCIATION_OR;
+        $association = (false === strpos($value, self::ASSOCIATION_OR)) ? self::ASSOCIATION_AND : self::ASSOCIATION_OR;
         $value = $this->parse($value);
 
         $chunks = $this->process($field, $value);
