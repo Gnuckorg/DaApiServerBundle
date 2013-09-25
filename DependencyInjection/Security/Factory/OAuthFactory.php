@@ -18,25 +18,25 @@ use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * ApiFactory class.
+ * OAuthFactory class.
  *
  * @author Thomas Prelot
  */
-class ApiFactory implements SecurityFactoryInterface
+class OAuthFactory implements SecurityFactoryInterface
 {
     /**
      * {@inheritdoc}
      */
     public function create(ContainerBuilder $container, $id, $config, $userProvider, $defaultEntryPoint)
     {
-        $providerId = 'security.authentication.provider.da_api_server.api.'.$id;
+        $providerId = 'security.authentication.provider.da_api_server.oauth.'.$id;
         $container
-            ->setDefinition($providerId, new DefinitionDecorator('da_api_server.security.authentication.provider.api'))
+            ->setDefinition($providerId, new DefinitionDecorator('da_api_server.security.authentication.provider.oauth'))
             ->replaceArgument(0, new Reference($userProvider))
         ;
 
-        $listenerId = 'security.authentication.listener.da_api_server.api.'.$id;
-        $container->setDefinition($listenerId, new DefinitionDecorator('da_api_server.security.authentication.listener.api'));
+        $listenerId = 'security.authentication.listener.da_api_server.oauth.'.$id;
+        $container->setDefinition($listenerId, new DefinitionDecorator('da_api_server.security.authentication.listener.oauth'));
 
         return array($providerId, $listenerId, $defaultEntryPoint);
     }
@@ -54,7 +54,7 @@ class ApiFactory implements SecurityFactoryInterface
      */
     public function getKey()
     {
-        return 'da_api';
+        return 'da_oauth';
     }
 
     /**

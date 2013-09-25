@@ -19,15 +19,15 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Http\Firewall\ListenerInterface;
-use Da\ApiServerBundle\Security\Authentication\Token\ApiToken;
-use Da\AuthModelBundle\Exception\ApiTokenNotFoundException;
+use Da\ApiServerBundle\Security\Authentication\Token\OAuthToken;
+use Da\AuthModelBundle\Exception\OAuthTokenNotFoundException;
 
 /**
- * ApiAuthListener class.
+ * OAuthListener class.
  *
  * @author Thomas Prelot
  */
-class ApiAuthListener implements ListenerInterface
+class OAuthListener implements ListenerInterface
 {
     /**
      * The security context.
@@ -49,8 +49,7 @@ class ApiAuthListener implements ListenerInterface
      */
     public function __construct(SecurityContextInterface $securityContext, AuthenticationManagerInterface $authenticationManager)
     {
-        $this->securityContext = $securityContext;
-        $this->authenticationManager = $authenticationManager;
+        parent::__construct($securityContext, $authenticationManager);
     }
 
     /**
@@ -59,12 +58,12 @@ class ApiAuthListener implements ListenerInterface
     public function handle(GetResponseEvent $event)
     {
         try {
-            if (null === $apiToken = $this->getApiTokenFromHeaders($event->getRequest(), true)) {
-                throw new ApiTokenNotFoundException();
+            if (null === $oAuthToken = $this->getAccessTokenFromHeaders($event->getRequest(), true)) {
+                throw new OAuthTokenNotFoundException();
             }
 
-            $token = new ApiToken();
-            $token->setToken($apiToken);
+            $token = new OAuthToken();
+            $token->setToken($oAuthToken);
         
             $returnValue = $this->authenticationManager->authenticate($token);
 
@@ -76,7 +75,7 @@ class ApiAuthListener implements ListenerInterface
                 return $event->setResponse($returnValue);
             }
         } catch (AuthenticationException $e) {
-            if ($e instanceof ApiTokenNotFoundException) {
+            if ($e instanceof OAuthTokenNotFoundException) {
                 $event->setResponse(new Response($e->getMessageKey(), 401));
             } else {
                 $event->setResponse(new Response($e->getMessageKey(), 403));
@@ -85,36 +84,46 @@ class ApiAuthListener implements ListenerInterface
     }
 
     /**
-     * Get the API token from the header.
+     * Get the access token from the header.
+     * Credits to Tim Ridgely <tim.ridgely@gmail.com>.
      *
      * @param Request $request           The request.
      * @param boolean $removeFromRequest Should remove the token form the request?
      *
-     * @return string The API token or null if non-existent.
+     * @return string The (bearer) access token or null if non-existent.
      */
-    protected function getApiTokenFromHeaders(Request $request, $removeFromRequest)
+    protected function getAccessTokenFromHeaders(Request $request, $removeFromRequest)
     {
-        $token = null;
-        if (!$request->headers->has('X-API-Security-Token')) {
-            // The Authorization header may not be passed to PHP by Apache.
-            // Trying to obtain it through apache_request_headers().
+        $header = null;
+        if (!$request->headers->has('AUTHORIZATION')) {
+            // The Authorization header may not be passed to PHP by Apache;
+            // Trying to obtain it through apache_request_headers()
             if (function_exists('apache_request_headers')) {
                 $headers = apache_request_headers();
 
-                if (isset($headers['X-API-Security-Token'])) {
-                   $token = $headers['X-API-Security-Token'];
+                // Server-side fix for bug in old Android versions (a nice side-effect of this fix means we don't care about capitalization for Authorization)
+                $headers = array_combine(array_map('ucwords', array_keys($headers)), array_values($headers));
+
+                if (isset($headers['Authorization'])) {
+                    $header = $headers['Authorization'];
                 }
             }
         } else {
-            $token = $request->headers->get('X-API-Security-Token');
+          $header = $request->headers->get('AUTHORIZATION');
         }
 
-        if (!$token) {
-            return null;
+        if (!$header) {
+            return NULL;
         }
+
+        if (!preg_match('/'.preg_quote(self::TOKEN_BEARER_HEADER_NAME, '/').'\s(\S+)/', $header, $matches)) {
+            return NULL;
+        }
+
+        $token = $matches[1];
 
         if ($removeFromRequest) {
-            $request->headers->remove('X-API-Security-Token');
+            $request->headers->remove('AUTHORIZATION');
         }
 
         return $token;

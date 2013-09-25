@@ -1,14 +1,26 @@
 parameters:
-    da_client_server.security.authentication.provider.class: Da\ApiServerBundle\Security\Authentication\Provider\ApiAuthProvider
-    da_client_server.security.authentication.listener.class: Da\ApiServerBundle\Security\Firewall\ApiAuthListener
+    da_api_server.security.authentication.provider.api.class: Da\ApiServerBundle\Security\Authentication\Provider\ApiAuthProvider
+    da_api_server.security.authentication.listener.api.class: Da\ApiServerBundle\Security\Firewall\ApiAuthListener
+    da_api_server.security.authentication.provider.oauth.class: Da\ApiServerBundle\Security\Authentication\Provider\OAuthProvider
+    da_api_server.security.authentication.listener.oauth.class: Da\ApiServerBundle\Security\Firewall\OAuthListener
 
 services:
-    da_api_server.security.authentication.provider:
-        class: %da_client_server.security.authentication.provider.class%
+    da_api_server.security.authentication.provider.api:
+        class: %da_api_server.security.authentication.provider.api.class%
         public: false
         arguments: [null, @da_auth_model.client_manager]
 
-    da_api_server.security.authentication.listener:
-        class: %da_client_server.security.authentication.listener.class% 
+    da_api_server.security.authentication.listener.api:
+        class: %da_api_server.security.authentication.listener.api.class% 
+        public: false
+        arguments: [@security.context, @security.authentication.manager]
+
+    da_api_server.security.authentication.provider.oauth:
+        class: %da_api_server.security.authentication.provider.oauth.class%
+        public: false
+        arguments: [null, @da_auth_model.user_manager]
+
+    da_api_server.security.authentication.listener.oauth:
+        class: %da_api_server.security.authentication.listener.oauth.class% 
         public: false
         arguments: [@security.context, @security.authentication.manager]
