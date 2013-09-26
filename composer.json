@@ -20,7 +20,8 @@
         "phpunit/phpunit": "3.7.*",
         "doctrine/doctrine-bundle": "1.2.*",
         "doctrine/mongodb-odm": "dev-master",
-        "doctrine/orm": ">=2.4"
+        "doctrine/orm": ">=2.4",
+        "da/auth-model-bundle": "dev-master"
     },
     "autoload": {
         "psr-0": { "Da\\ApiServerBundle": "" }

@@ -25,11 +25,6 @@ class OAuthToken extends AbstractToken
      */
     protected $token;
 
-    /**
-     * @var string
-     */
-    protected $apiToken;
-
     public function setToken($token)
     {
         $this->token = $token;

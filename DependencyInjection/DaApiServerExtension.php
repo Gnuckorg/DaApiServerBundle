@@ -33,6 +33,9 @@ class DaApiServerExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
+
+        $container->setParameter('da_api_server.user_manager', $config['user_manager']);
+        $container->setParameter('da_api_server.client_manager', $config['client_manager']);
     }
     
     /**

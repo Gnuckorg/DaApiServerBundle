@@ -8,7 +8,7 @@ services:
     da_api_server.security.authentication.provider.api:
         class: %da_api_server.security.authentication.provider.api.class%
         public: false
-        arguments: [null, @da_auth_model.client_manager]
+        arguments: [null, null]
 
     da_api_server.security.authentication.listener.api:
         class: %da_api_server.security.authentication.listener.api.class% 
@@ -18,7 +18,7 @@ services:
     da_api_server.security.authentication.provider.oauth:
         class: %da_api_server.security.authentication.provider.oauth.class%
         public: false
-        arguments: [null, @da_auth_model.user_manager]
+        arguments: [null, null]
 
     da_api_server.security.authentication.listener.oauth:
         class: %da_api_server.security.authentication.listener.oauth.class% 

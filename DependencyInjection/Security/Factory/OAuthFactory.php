@@ -33,6 +33,7 @@ class OAuthFactory implements SecurityFactoryInterface
         $container
             ->setDefinition($providerId, new DefinitionDecorator('da_api_server.security.authentication.provider.oauth'))
             ->replaceArgument(0, new Reference($userProvider))
+            ->replaceArgument(1, new Reference($container->getParameter('da_api_server.user_manager')))
         ;
 
         $listenerId = 'security.authentication.listener.da_api_server.oauth.'.$id;

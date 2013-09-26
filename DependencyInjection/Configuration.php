@@ -29,6 +29,13 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('da_api_server');
 
+        $rootNode
+            ->children()
+                ->scalarNode('user_manager')->defaultValue('da_auth_model.client_manager.doctrine')->end()
+                ->scalarNode('client_manager')->defaultValue('da_auth_model.client_manager.doctrine')->end()
+            ->end()
+        ;
+
         return $treeBuilder;
     }
 }

@@ -61,7 +61,7 @@ class ApiAuthProvider implements AuthenticationProviderInterface
         }
 
         $tokenString = $token->getToken();
-        $client = $this->clientManager->findClientByApiToken($tokenString);
+        $client = $this->clientManager->retrieveClientByApiToken($tokenString);
         $scope = $client->getScope();
 
         $roles = array();
