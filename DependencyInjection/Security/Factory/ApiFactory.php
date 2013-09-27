@@ -32,8 +32,8 @@ class ApiFactory implements SecurityFactoryInterface
         $providerId = 'security.authentication.provider.da_api_server.api.'.$id;
         $container
             ->setDefinition($providerId, new DefinitionDecorator('da_api_server.security.authentication.provider.api'))
-            ->replaceArgument(0, new Reference($userProvider))
-            ->replaceArgument(1, new Reference($container->getParameter('da_api_server.client_manager')))
+                ->replaceArgument(0, new Reference($userProvider))
+                ->addTag('da_api_server.firewall.api')
         ;
 
         $listenerId = 'security.authentication.listener.da_api_server.api.'.$id;

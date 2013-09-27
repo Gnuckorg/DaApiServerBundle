@@ -16,12 +16,16 @@ use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Da\ApiServerBundle\DependencyInjection\Security\Factory\ApiFactory;
 use Da\ApiServerBundle\DependencyInjection\Security\Factory\OAuthFactory;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
+use Da\ApiServerBundle\DependencyInjection\Compiler\InjectSecurityFirewallParametersCompilerPass;
 
 class DaApiServerBundle extends Bundle
 {
 	public function build(ContainerBuilder $container)
     {
         parent::build($container);
+
+        $container->addCompilerPass(new InjectSecurityFirewallParametersCompilerPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION);
 
         if (version_compare(Kernel::VERSION, '2.1', '>=')) {
             $extension = $container->getExtension('security');
