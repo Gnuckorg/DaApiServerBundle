@@ -31,8 +31,8 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->scalarNode('user_manager')->defaultValue('da_auth_model.client_manager.doctrine')->end()
-                ->scalarNode('client_manager')->defaultValue('da_auth_model.client_manager.doctrine')->end()
+                ->scalarNode('user_manager')->defaultValue(null)->end()
+                ->scalarNode('client_manager')->defaultValue(null)->end()
             ->end()
         ;
 

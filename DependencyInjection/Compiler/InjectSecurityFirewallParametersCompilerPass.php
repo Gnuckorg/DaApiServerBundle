@@ -30,18 +30,40 @@ class InjectSecurityFirewallParametersCompilerPass implements CompilerPassInterf
      */
     public function process(ContainerBuilder $container)
     {
+        // Client manager.
         $taggedServices = $container->findTaggedServiceIds(
             'da_api_server.firewall.api'
         );
-        foreach ($taggedServices as $id => $attributes) {
-            $container->getDefinition($id)->replaceArgument(1, new Reference($container->getParameter('da_api_server.client_manager')));
+        $clientManagerId = $container->getParameter('da_api_server.client_manager');
+
+        if (null === $clientManagerId) {
+            if ($container->hasDefinition('da_oauth_server.client_manager.doctrine')) {
+                $clientManagerId = 'da_oauth_server.client_manager.doctrine';
+            } else {
+                $clientManagerId = 'da_api_server.client_manager.http';
+            }
         }
 
+        foreach ($taggedServices as $id => $attributes) {
+            $container->getDefinition($id)->replaceArgument(1, new Reference($clientManagerId));
+        }
+
+        // User manager.
         $taggedServices = $container->findTaggedServiceIds(
             'da_api_server.firewall.oauth'
         );
+        $userManagerId = $container->getParameter('da_api_server.user_manager');
+
+        if (null === $userManagerId) {
+            if ($container->hasDefinition('da_oauth_server.user_manager.doctrine')) {
+                $userManagerId = 'da_oauth_server.user_manager.doctrine';
+            } else {
+                $userManagerId = 'da_api_server.user_manager.http';
+            }
+        }
+
         foreach ($taggedServices as $id => $attributes) {
-            $container->getDefinition($id)->replaceArgument(1, new Reference($container->getParameter('da_api_server.user_manager')));
+            $container->getDefinition($id)->replaceArgument(1, new Reference($userManagerId));
         }
     }
 }

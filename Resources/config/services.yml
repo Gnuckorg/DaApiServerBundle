@@ -3,6 +3,10 @@ parameters:
     da_api_server.security.authentication.listener.api.class: Da\ApiServerBundle\Security\Firewall\ApiAuthListener
     da_api_server.security.authentication.provider.oauth.class: Da\ApiServerBundle\Security\Authentication\Provider\OAuthProvider
     da_api_server.security.authentication.listener.oauth.class: Da\ApiServerBundle\Security\Firewall\OAuthListener
+    da_api_server.client_manager.http.class: Da\ApiServerBundle\HttpClient\ClientManager
+    da_api_server.user_manager.http.class: Da\ApiServerBundle\HttpClient\UserManager
+    da_api_server.client.class: Da\AuthCommonBundle\Model\Client
+    da_api_server.user.class: Da\AuthCommonBundle\Model\User
 
 services:
     da_api_server.security.authentication.provider.api:
@@ -24,3 +28,15 @@ services:
         class: %da_api_server.security.authentication.listener.oauth.class% 
         public: false
         arguments: [@security.context, @security.authentication.manager]
+
+    da_api_server.client_manager.http:
+        class: %da_api_server.client_manager.http.class%
+        arguments: [null, null, %da_api_server.client.class%]
+        public: false
+        lazy: true
+
+    da_api_server.user_manager.http:
+        class: %da_api_server.user_manager.http.class%
+        arguments: [null, null, %da_api_server.user.class%]
+        public: false
+        lazy: true

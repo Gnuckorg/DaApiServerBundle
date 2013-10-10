@@ -17,8 +17,8 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Da\ApiServerBundle\Security\Authentication\Token\ApiToken;
-use Da\AuthModelBundle\Model\ClientManagerInterface;
-use Da\AuthModelBundle\Exception\InvalidApiTokenException;
+use Da\AuthCommonBundle\Model\ClientManagerInterface;
+use Da\AuthCommonBundle\Exception\InvalidApiTokenException;
 
 /**
  * ApiAuthProvider class.

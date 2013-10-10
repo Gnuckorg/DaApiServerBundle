@@ -20,7 +20,7 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Http\Firewall\ListenerInterface;
 use Da\ApiServerBundle\Security\Authentication\Token\ApiToken;
-use Da\AuthModelBundle\Exception\ApiTokenNotFoundException;
+use Da\AuthCommonBundle\Exception\ApiTokenNotFoundException;
 
 /**
  * ApiAuthListener class.

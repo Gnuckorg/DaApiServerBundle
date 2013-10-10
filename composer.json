@@ -21,7 +21,7 @@
         "doctrine/doctrine-bundle": "1.2.*",
         "doctrine/mongodb-odm": "dev-master",
         "doctrine/orm": ">=2.2.3",
-        "da/auth-model-bundle": "dev-master"
+        "da/auth-common-bundle": "dev-master"
     },
     "autoload": {
         "psr-0": { "Da\\ApiServerBundle": "" }

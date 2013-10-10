@@ -6,7 +6,7 @@ DaApiServerBundle is a Symfony2's bundle allowing to provide a REST API in a sim
 Installation
 ------------
 
-Installation is a quick 3 steps process.
+Installation is a quick 2 steps process.
 
 ### Step 1: Add in composer
 
@@ -18,7 +18,7 @@ Add the bundle in the composer.json file:
 "require": {
     // ...
     "friendsofsymfony/oauth-server-bundle": "dev-master",
-    "da/auth-model-bundle": "dev-master",
+    "da/auth-common-bundle": "dev-master",
     "da/api-server-bundle": "dev-master"
 },
 ```
@@ -39,15 +39,10 @@ Declare the bundle in your kernel:
 
 $bundles = array(
     // ...
-    new Da\AuthModelBundle\DaAuthModelBundle(),
+    new Da\AuthCommonBundle\DaAuthCommonBundle(),
     new Da\ApiServerBundle\DaApiServerBundle(),
 );
 ```
-
-### Step 3: Parameterize a database
-
-Do not forget to parameterize the database for the DaAuthModelBundle where you can find your clients.
-You can use the [DaOAuthServerBundle](https://github.com/Gnuckorg/DaOAuthServerBundle) to create your clients.
 
 Check the client API key
 ------------------------

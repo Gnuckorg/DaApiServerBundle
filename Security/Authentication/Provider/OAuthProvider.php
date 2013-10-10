@@ -17,8 +17,8 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Da\ApiServerBundle\Security\Authentication\Token\OAuthToken;
-use Da\AuthModelBundle\Model\UserManagerInterface;
-use Da\AuthModelBundle\Exception\InvalidAccessTokenException;
+use Da\AuthCommonBundle\Model\UserManagerInterface;
+use Da\AuthCommonBundle\Exception\InvalidAccessTokenException;
 
 /**
  * OAuthProvider class.
