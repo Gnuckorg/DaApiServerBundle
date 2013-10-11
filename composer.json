@@ -24,7 +24,10 @@
         "doctrine/orm": ">=2.2.3"
     },
     "suggest": {
-        "da/api-client-bundle": "Allow to connect to a remote SSO server"
+        "da/api-client-bundle": "Allow to connect to a remote SSO server",
+        "doctrine/doctrine-bundle": "Allow to use the lexer",
+        "doctrine/mongodb-odm": "Allow to use the lexer",
+        "doctrine/orm": "Allow to use the lexer"
     },
     "autoload": {
         "psr-0": { "Da\\ApiServerBundle": "" }
