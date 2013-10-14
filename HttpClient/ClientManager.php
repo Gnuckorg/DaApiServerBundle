@@ -49,7 +49,7 @@ class ClientManager extends RestApiClientBridge implements ClientManagerInterfac
     /**
      * {@inheritdoc}
      */
-    public function retrieveClientFromApiToken($apiToken)
+    public function retrieveClientByApiToken($apiToken)
     {
         $client = new $this->class();
 

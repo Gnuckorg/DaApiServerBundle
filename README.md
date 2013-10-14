@@ -115,12 +115,12 @@ da_api_client:
             endpoint_root:  %api.sso.endpoint_root%
             security_token: %api.sso.security_token%
             client:
-                service: da_auth_model.user_manager.http
+                service: da_api_server.user_manager.http
         sso_client:
             endpoint_root:  %api.sso.endpoint_root%
             security_token: %api.sso.security_token%
             client:
-                service: da_auth_model.client_manager.http
+                service: da_api_server.client_manager.http
 
 # DaApiServer Configuration
 da_api_server:

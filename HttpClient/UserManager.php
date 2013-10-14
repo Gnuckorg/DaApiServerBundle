@@ -49,7 +49,7 @@ class UserManager extends RestApiClientBridge implements UserManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function retrieveUserFromAccessToken($accessToken)
+    public function retrieveUserByAccessToken($accessToken)
     {
         $user = new $this->class();
 
