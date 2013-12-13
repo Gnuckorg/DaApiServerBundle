@@ -54,7 +54,7 @@ class UserManager extends RestApiClientBridge implements UserManagerInterface
         $user = new $this->class();
 
         try {
-            $userArray = (array)$this->get(sprintf('/accesstokens/%s/user', $accessToken));
+            $userArray = json_decode($this->get(sprintf('/accesstokens/%s/user', $accessToken), array(), array('Accept' => 'application/json')), true);
             $user
                 ->setId($userArray['id'])
                 ->setUsername($userArray['username'])

@@ -54,7 +54,7 @@ class ClientManager extends RestApiClientBridge implements ClientManagerInterfac
         $client = new $this->class();
 
         try {
-            $clientArray = (array)json_decode($this->get(sprintf('/clients/%s', $apiToken)));
+            $clientArray = json_decode($this->get(sprintf('/clients/%s', $apiToken), array(), array('Accept' => 'application/json')), true);
 
             $client
                 ->setName($clientArray['name'])
