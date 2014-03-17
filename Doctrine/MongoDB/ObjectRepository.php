@@ -115,7 +115,7 @@ class ObjectRepository extends DocumentRepository implements ObjectRepositoryInt
      *
      * @return Doctrine\MongoDB\Query\Builder The native query builder.
      */
-    protected function getNativeQueryBuilder($documentName = null)
+    public function getNativeQueryBuilder($documentName = null)
     {
         return parent::createQueryBuilder($documentName);
     }
