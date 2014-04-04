@@ -31,7 +31,8 @@ abstract class AbstractQueryBuilderDecorator extends BaseAbstractQueryBuilderDec
             }
         }
 
-        $this->addAnd($expr);
+        $query = array_merge_recursive($this->getQueryArray(), $expr->getQuery());
+        $this->setQueryArray($query);
     }
 
     /**

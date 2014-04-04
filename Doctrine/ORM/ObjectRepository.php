@@ -116,7 +116,7 @@ class ObjectRepository extends EntityRepository implements ObjectRepositoryInter
      *
      * @return Doctrine\MongoDB\Query\Builder The native query builder.
      */
-    protected function getNativeQueryBuilder($alias, $indexBy = null)
+    public function getNativeQueryBuilder($alias, $indexBy = null)
     {
         return parent::createQueryBuilder($alias, $indexBy);
     }
