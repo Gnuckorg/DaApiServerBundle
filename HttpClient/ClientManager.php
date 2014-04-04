@@ -13,9 +13,10 @@ namespace Da\ApiServerBundle\HttpClient;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Da\AuthCommonBundle\Exception\InvalidApiTokenException;
-use Da\ApiClientBundle\HttpClient\RestApiClientBridge;
+use Da\ApiClientBundle\Http\Rest\RestApiClientBridge;
 use Da\AuthCommonBundle\Model\ClientManagerInterface;
-use Da\ApiClientBundle\HttpClient\RestApiClientImplementorInterface;
+use Da\ApiClientBundle\Http\Rest\RestApiClientImplementorInterface;
+use Da\ApiClientBundle\Exception\ApiHttpResponseException;
 
 /**
  * ClientManager is an implementation of a client manager
