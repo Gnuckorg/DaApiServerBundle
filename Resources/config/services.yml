@@ -5,6 +5,7 @@ parameters:
     da_api_server.security.authentication.listener.oauth.class: Da\ApiServerBundle\Security\Firewall\OAuthListener
     da_api_server.client_manager.http.class: Da\ApiServerBundle\HttpClient\ClientManager
     da_api_server.user_manager.http.class: Da\ApiServerBundle\HttpClient\UserManager
+    da_api_server.event.api_listener.class: Da\ApiServerBundle\Event\ApiListener
     da_api_server.client.class: Da\AuthCommonBundle\Model\Client
     da_api_server.user.class: Da\AuthCommonBundle\Model\User
 
@@ -40,3 +41,8 @@ services:
         arguments: [null, null, %da_api_server.user.class%]
         public: false
         lazy: true
+
+    da_api_server.event.api_listener:
+        class: %da_api_server.event.api_listener%
+        tags:
+            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }

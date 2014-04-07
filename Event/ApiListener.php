@@ -12,9 +12,6 @@
 namespace Da\ApiServerBundle\Event;
 
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\RequestMatcherInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContext;
 
 /**
@@ -25,28 +22,11 @@ use Symfony\Component\Security\Core\SecurityContext;
 class ApiListener
 {
     /**
-     * The security context.
-     *
-     * @var SecurityContext
-     */
-    protected $securityContext;
-
-    /**
-     * Constructor.
-     *
-     * @param SecurityContext $securityContext The security context.
-     */
-    public function __construct(SecurityContext $securityContext = null)
-    {
-        $this->securityContext = $securityContext;
-    }
-
-    /**
      * @param FilterResponseEvent $event
      */
     public function onKernelResponse(FilterResponseEvent $event)
     {
-        $request = $event->getRequest());
+        $request = $event->getRequest();
         $response = $event->getResponse();
 
         $userAgent = $request->headers->get('User-Agent');
