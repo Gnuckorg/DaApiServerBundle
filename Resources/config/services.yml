@@ -43,6 +43,6 @@ services:
         lazy: true
 
     da_api_server.event.api_listener:
-        class: %da_api_server.event.api_listener%
+        class: %da_api_server.event.api_listener.class%
         tags:
             - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
