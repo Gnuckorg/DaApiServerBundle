@@ -17,6 +17,13 @@ use Da\ApiServerBundle\Exception\InvalidFieldValueException;
 abstract class AbstractQueryBuilderDecorator extends BaseAbstractQueryBuilderDecorator
 {
     /**
+     * Wheter or not it is a OR request.
+     *
+     * @var boolean
+     */
+    protected $isOrRequest = false;
+
+    /**
      * {@inheritdoc}
      */
     protected function assemble(array $chunks, $field, $association)
@@ -30,6 +37,13 @@ abstract class AbstractQueryBuilderDecorator extends BaseAbstractQueryBuilderDec
                 $expr->addAnd($chunkExpr);
             }
         }
+
+        // Double OR queries are ok but triple OR queries are not performant (bad mongodb optimization).
+        if ($association === BaseAbstractQueryBuilderDecorator::ASSOCIATION_OR && $this->isOrRequest) {
+            $expr = $this->expr()->field($field)->addAnd($expr);
+        }
+
+        $this->isOrRequest = true;
 
         $query = array_merge_recursive($this->getQueryArray(), $expr->getQuery());
         $this->setQueryArray($query);
