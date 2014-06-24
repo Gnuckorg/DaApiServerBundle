@@ -55,7 +55,7 @@ class OAuthFactory implements SecurityFactoryInterface
      */
     public function getKey()
     {
-        return 'da_oauth';
+        return 'da_api_oauth';
     }
 
     /**
