@@ -15,7 +15,7 @@
         "php": ">=5.3.3",
         "symfony/dependency-injection" : ">=2.1",
         "symfony/config" : ">=2.1",
-        "da/auth-common-bundle": "dev-master"
+        "da/auth-common-bundle": "1.0.*"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*",
