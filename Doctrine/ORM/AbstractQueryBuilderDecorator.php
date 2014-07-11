@@ -64,7 +64,7 @@ abstract class AbstractQueryBuilderDecorator extends BaseAbstractQueryBuilderDec
                 case Type::DATE:
                 case Type::DATETIME:
                     try {
-                        $argument = \DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $argument);
+                        $argument = \DateTime::createFromFormat(\DateTime::ISO8601, $argument);
                     } catch (Exception $e) {
                         try {
                             $argument = new \DateTime($argument);
