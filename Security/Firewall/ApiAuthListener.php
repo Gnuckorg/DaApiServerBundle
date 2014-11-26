@@ -59,7 +59,7 @@ class ApiAuthListener implements ListenerInterface
     public function handle(GetResponseEvent $event)
     {
         try {
-            if (null === $apiToken = $this->getApiTokenFromHeaders($event->getRequest(), true)) {
+            if (null === $apiToken = $this->getApiTokenFromHeaders($event->getRequest(), false)) {
                 throw new ApiTokenNotFoundException();
             }
 
