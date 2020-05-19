@@ -16,9 +16,9 @@ services:
         arguments: [null, null]
 
     da_api_server.security.authentication.listener.api:
-        class: %da_api_server.security.authentication.listener.api.class% 
+        class: %da_api_server.security.authentication.listener.api.class%
         public: false
-        arguments: [@security.context, @security.authentication.manager]
+        arguments: ["@security.context", "@security.authentication.manager"]
 
     da_api_server.security.authentication.provider.oauth:
         class: %da_api_server.security.authentication.provider.oauth.class%
@@ -26,9 +26,9 @@ services:
         arguments: [null, null]
 
     da_api_server.security.authentication.listener.oauth:
-        class: %da_api_server.security.authentication.listener.oauth.class% 
+        class: %da_api_server.security.authentication.listener.oauth.class%
         public: false
-        arguments: [@security.context, @security.authentication.manager]
+        arguments: ["@security.context", "@security.authentication.manager"]
 
     da_api_server.client_manager.http:
         class: %da_api_server.client_manager.http.class%
